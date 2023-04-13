@@ -1,8 +1,20 @@
 import server from "./server";
+import { useEffect } from "react";
 
 function Wallet({ address, setAddress, balance, setBalance }) {
-  async function onChange(evt) {
-    const address = evt.target.value;
+
+  useEffect(() => {
+    if(localStorage.getItem("Account")){
+      address = localStorage.getItem("Account");
+      setAddress(address);
+    }
+    onChange(address);
+  },[address]);
+  
+  
+
+  async function onChange(value) {
+    const address = value;
     setAddress(address);
     if (address) {
       const {
@@ -20,7 +32,7 @@ function Wallet({ address, setAddress, balance, setBalance }) {
 
       <label>
         Wallet Address
-        <input placeholder="Type an address, for example: 0x1" value={address} onChange={onChange}></input>
+        <input placeholder="Type an address, for example: 0x1" value={address} onChange={ (e)=>onChange(e.target.value)}></input>
       </label>
 
       <div className="balance">Balance: {balance}</div>
